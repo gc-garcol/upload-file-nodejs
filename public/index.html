@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+        <div class="col-sm-8 col-sm-offset-2" style="margin-top: 50px;">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Upload file</h3>
+                    </div>
+                    <div class="panel-body">
+                        <form action="/api/file" method="POST" enctype="multipart/form-data">
+                            <legend>Upload file</legend>
+                            <div class="form-group">
+                                <label for="">File</label>
+                                <input id="path" type="text" class="form-control" name="path">
+                            </div>
+                            <div class="form-group">
+                                <label for="">File</label>
+                                <input multiple id="file" type="file" class="form-control" name="myfiles">
+                            </div>
+                            <button type="submit" id="submitbtn" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

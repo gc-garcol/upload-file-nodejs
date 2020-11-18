@@ -1,0 +1,30 @@
+{
+  "name": "gulp-project",
+  "version": "1.0.0",
+  "description": "demo",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "gulp",
+    "server": "nodemon"
+  },
+  "author": "thaivan",
+  "license": "ISC",
+  "devDependencies": {
+    "del": "^6.0.0",
+    "express": "^4.17.1",
+    "gulp": "^4.0.2",
+    "gulp-bro": "^2.0.0",
+    "gulp-sass": "^4.1.0"
+  },
+  "dependencies": {
+    "axios": "^0.20.0",
+    "body-parser": "^1.19.0",
+    "browserify": "^17.0.0",
+    "formidable": "^1.2.2",
+    "fs": "0.0.1-security",
+    "multer": "^1.4.2",
+    "nodemon": "^2.0.6",
+    "path": "^0.12.7"
+  }
+}
