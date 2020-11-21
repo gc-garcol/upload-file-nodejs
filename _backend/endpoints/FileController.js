@@ -1,33 +1,22 @@
-const formidable = require("formidable");
-const fs = require('fs');
-const path = require("path");
 const multer = require("multer");
 
 const express = require('express');
 const router = express.Router();
 
-const ENV = require('../../env');
+const MulterUtil = require("../utils/MulterUtil");
 
-const storage = multer.diskStorage({
-    destination: (req, file, callback) => {
-        callback(null, `${ENV.UPLOAD_DIR}`);
-    },
-    filename: (req, file, callback) => {
-        let filename = `${file.originalname}`;
-        callback(null, filename);
-    }
-});
+const INPUT_FILES = 'myfiles';
+const MAX_FILES = 31;
 
-// const uploadManyFiles = multer({storage: storage}).fields([{ name: 'myfiles', maxCount: 31}]);
-const uploadManyFiles = multer({storage: storage}).any();
+const uploadManyFiles = multer({storage: MulterUtil.getBaseStorage()}).fields([{ name: INPUT_FILES, maxCount: MAX_FILES}]);
 
 router.post('/', uploadManyFiles, (req, res) => {
-    console.log(req);
-    console.log("=====");
-    console.log(req.body);
     if (req.files.length <= 0) {
         return res.send(`You must select at least 1 file or more.`);
     }
+
+    MulterUtil.moveFile(req, INPUT_FILES);
+
     res.send(`Your files has been uploaded.`);
 });
 
