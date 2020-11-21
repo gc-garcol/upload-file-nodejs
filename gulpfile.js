@@ -6,15 +6,15 @@ const del = require('del');
 const bro = require('gulp-bro');
 
 gulp.task('build-css', () => {
-    return gulp.src('src/scss/**/*.scss')
+    return gulp.src('_frontend/scss/**/*.scss')
         .pipe(sass().on('error', sass.logError))
-        .pipe(gulp.dest('public/css'));
+        .pipe(gulp.dest('_public/css'));
 });
 
 gulp.task('build-js', () => {
-    return gulp.src('src/js/**/*js')
+    return gulp.src('_frontend/js/**/*js')
         .pipe(bro())
-        .pipe(gulp.dest('public/js'))
+        .pipe(gulp.dest('_public/js'))
 });
 
 gulp.task('default',
@@ -30,10 +30,10 @@ gulp.task('build',
     gulp.series(['build-css', 'build-js'])
 );
 
-gulp.watch('src/scss/**/*.scss', (done) => {
+gulp.watch('_frontend/scss/**/*.scss', (done) => {
     gulp.series(['build-css'])(done);
 });
 
-gulp.watch('src/js/**/*.js', (done) => {
+gulp.watch('_frontend/js/**/*.js', (done) => {
     gulp.series(['build-js'])(done);
 });

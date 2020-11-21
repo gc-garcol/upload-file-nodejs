@@ -4,3 +4,7 @@ public/css
 public/js
 
 package-lock.json
+
+uploads
+
+.vscode
