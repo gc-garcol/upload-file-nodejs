@@ -163,6 +163,7 @@ garcol.loadFiles = () => {
  * [go to parent folder]
  */
 garcol.goBack = () => {
+    garcol.image.src = `${window.location.origin}${garcol.BASE}/img/folder.jpg`;
     if (garcol.folder.length == 0) return;
 
     garcol.folder.pop();
