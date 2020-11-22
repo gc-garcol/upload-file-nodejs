@@ -134,7 +134,7 @@ garcol.fileContainer.addEventListener('change', () => {
     
     fileQuantity > 0 
     ? garcol.submitArea.classList.add("-display")
-    : garcol.submitArea.classList.removeClass("-display");
+    : garcol.submitArea.classList.remove("-display");
 });
 
 /**
