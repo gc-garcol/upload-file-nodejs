@@ -7,6 +7,7 @@ const ENV = require("./env");
 
 // INIT
 MulterUtil.createDirIfNotExist(ENV.UPLOAD_DIR_NAME);
+MulterUtil.createDirIfNotExist(ENV.TMP_UPLOAD_DIR_NAME);
 
 // IMPORT controllers
 const FileController = require("./_backend/endpoints/FileController");

@@ -31,7 +31,7 @@ class MulterUtil {
             let correctDir = `${path.join(ENV.UPLOAD_DIR, req.body.pathfile)}`;
             this.createDirIfNotExist(correctDir);
 
-            let oldpath = `${path.join(ENV.UPLOAD_DIR, fileName)}`;
+            let oldpath = `${path.join(ENV.TMP_UPLOAD_DIR, fileName)}`;
             let newpath = `${path.join(correctDir, fileName)}`;
             this.move(oldpath, newpath);
         });
@@ -66,7 +66,7 @@ class MulterUtil {
 
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
-        callback(null, `${ENV.UPLOAD_DIR}`);
+        callback(null, `${ENV.TMP_UPLOAD_DIR}`);
     },
     filename: (req, file, callback) => {
         let filename = `${file.originalname}`;
