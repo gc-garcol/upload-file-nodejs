@@ -71,6 +71,12 @@ garcol.getCurrentDir = () => {
  */
 garcol.onResponseSubmitFile = (response) => {
     console.log(response);
+    switch(response.status) {
+        case 200: {
+            NetworkService.getFiles(garcol.getCurrentDir());
+            break;
+        }
+    }
 }
 
 /**
