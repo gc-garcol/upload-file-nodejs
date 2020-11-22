@@ -76,7 +76,9 @@ garcol.onReceiveFiles = (response) => {
     console.log(response);
     switch (response.status) {
         case 200: {
-            
+            let data = response.data.files;
+            let arr = data.split(",");
+            garcol.renderFiles(arr);
             break;
         }
     }
@@ -94,15 +96,12 @@ garcol.onHideMenuBar = () => {
  * @param {Array} data 
  */
 garcol.renderFiles = (data) => {
-    garcol.fileArea.innerHTML = 
-        `
-            ${new FileInformation("zero-two.gif", garcol.getCurrentDir()).render()}
-            ${new FileInformation("zero-two.git", garcol.getCurrentDir()).render()}
-            ${new FileInformation("zero-two.gif", garcol.getCurrentDir()).render()}
-            ${new FileInformation("zero-two.gif", garcol.getCurrentDir()).render()}
-        `
+    let renderData = [];
+    data.forEach((file) => {
+        renderData.push(new FileInformation(file, garcol.getCurrentDir()).render())
+    });
+    garcol.fileArea.innerHTML = renderData.join("\n");
 }
-garcol.renderFiles();
 // CONTROLLERs
 
 /**
