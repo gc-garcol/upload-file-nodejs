@@ -27,6 +27,7 @@ garcol.contentArea = document.getElementById("js-contentArea");
 garcol.sidebarArea = document.getElementById("js-sidebarArea");
 garcol.fileArea = document.getElementById("js-fileArea");
 garcol.image = document.getElementById("js-image");
+garcol.currentDir = document.getElementById("js-currentFolder");
 
 // WINDOW FUNCTIONs
 /**
@@ -47,12 +48,14 @@ onClickRow = (row, info, classType, extra) => {
             garcol.image.src = `${window.location.origin}${garcol.BASE}/img/file.png`;
             break;    
         case 'folder':
+            garcol.folder.push(info);
+            NetworkService.getFiles(garcol.getCurrentDir());
             break;    
     }
 }
 
 // VARIABLEs
-garcol.folder = [];
+garcol.folder = ["/"];
 
 // UTILs
 garcol.getCurrentDir = () => {
@@ -79,6 +82,7 @@ garcol.onReceiveFiles = (response) => {
             let data = response.data.files;
             let arr = data.split(",");
             garcol.renderFiles(arr);
+            garcol.currentDir.innerHTML = `/${garcol.getCurrentDir()}`;
             break;
         }
     }
@@ -109,7 +113,7 @@ garcol.renderFiles = (data) => {
  */
 garcol.submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    NetworkService.submitFile(garcol.folder.join("/"));
+    NetworkService.submitFile(garcol.getCurrentDir());
 });
 
 /**
@@ -143,7 +147,7 @@ garcol.contentArea.addEventListener('click', garcol.onHideMenuBar);
  * 
  */
 garcol.loadFiles = () => {
-    NetworkService.getFiles(garcol.folder.join());
+    NetworkService.getFiles(garcol.getCurrentDir());
 }
 
 /**
