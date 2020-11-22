@@ -51,7 +51,7 @@ const FILE_CLASS = {
     "jpg": "fa fa-file-image-o",
     "png": "fa fa-file-image-o",
     "gif": "fa fa-file-image-o",
-    "folder": "fa fa-folder",
+    "folder": "fa fa-folder highlight",
     "other": "fa fa-file-o"
 
 }

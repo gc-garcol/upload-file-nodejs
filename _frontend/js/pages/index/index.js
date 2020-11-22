@@ -49,6 +49,7 @@ onClickRow = (row, info, classType, extra) => {
             garcol.image.src = `${window.location.origin}${garcol.BASE}/img/file.png`;
             break;    
         case 'folder':
+            garcol.image.src = `${window.location.origin}${garcol.BASE}/img/folder.jpg`;
             garcol.folder.push(info);
             NetworkService.getFiles(garcol.getCurrentDir());
             break;    
