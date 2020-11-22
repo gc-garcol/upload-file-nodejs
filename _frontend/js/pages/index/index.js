@@ -28,6 +28,7 @@ garcol.sidebarArea = document.getElementById("js-sidebarArea");
 garcol.fileArea = document.getElementById("js-fileArea");
 garcol.image = document.getElementById("js-image");
 garcol.currentDir = document.getElementById("js-currentFolder");
+garcol.goBackDOM = document.getElementById("js-back");
 
 // WINDOW FUNCTIONs
 /**
@@ -55,11 +56,12 @@ onClickRow = (row, info, classType, extra) => {
 }
 
 // VARIABLEs
-garcol.folder = ["/"];
+garcol.folder = [];
 
 // UTILs
 garcol.getCurrentDir = () => {
-    return garcol.folder.join("/");
+    let path = `/${garcol.folder.join("/")}`;
+    return path;
 }
 
 // HANDLERs
@@ -82,7 +84,7 @@ garcol.onReceiveFiles = (response) => {
             let data = response.data.files;
             let arr = data.split(",");
             garcol.renderFiles(arr);
-            garcol.currentDir.innerHTML = `/${garcol.getCurrentDir()}`;
+            garcol.currentDir.innerHTML = `${garcol.getCurrentDir()}`;
             break;
         }
     }
@@ -154,6 +156,8 @@ garcol.loadFiles = () => {
  * [go to parent folder]
  */
 garcol.goBack = () => {
+    if (garcol.folder.length == 0) return;
+
     garcol.folder.pop();
     garcol.loadFiles();
 }
@@ -165,6 +169,13 @@ garcol.goToFolder = (folderName) => {
     garcol.folder.push(folderName);
     garcol.loadFiles();
 }
+
+/**
+ * on click go back
+ */
+garcol.goBackDOM.addEventListener('click', () => {
+    garcol.goBack();
+});
 
 /**
  * [window onload]
