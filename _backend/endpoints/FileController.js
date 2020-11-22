@@ -42,8 +42,8 @@ router.get("/", (req, res) => {
     const files = FileService.getFolder(folderName);
 
     let responseHandler = (files === null) 
-    ? res.send.bind(res, ResponseBuilder.build(HttpStatus.NOT_FOUND, {message: "folder not found!!"}))
-    : res.send.bind(res, ResponseBuilder.build(HttpStatus.OK, {message: files.join()}));
+    ? ResponseBuilder.build(res, HttpStatus.NOT_FOUND, {message: "folder not found!!"})
+    : ResponseBuilder.build(res, HttpStatus.OK, {message: files.join()})
 
     responseHandler();
 });
