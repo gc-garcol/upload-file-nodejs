@@ -31,6 +31,7 @@ garcol.currentDir = document.getElementById("js-currentFolder");
 garcol.goBackDOM = document.getElementById("js-back");
 garcol.folderNameDOM = document.getElementById("js-folderCreateName");
 garcol.createFolderBtnDOM = document.getElementById("js-createFolderBtn");
+garcol.filenameDOM = document.getElementById("js-filename");
 
 
 // WINDOW FUNCTIONs
@@ -57,6 +58,8 @@ onClickRow = (row, info, classType, extra) => {
             NetworkService.getFiles(garcol.getCurrentDir());
             break;    
     }
+
+    garcol.filenameDOM.innerHTML = info;
 }
 
 // VARIABLEs
@@ -195,6 +198,7 @@ garcol.goBack = () => {
 
     garcol.folder.pop();
     garcol.loadFiles();
+    garcol.filenameDOM.innerHTML = garcol.folder[garcol.folder.length - 1] || "/";
 }
 
 /**
@@ -227,4 +231,5 @@ garcol.createFolderBtnDOM.addEventListener('click', () => {
  */
 window.onload = () => {
     NetworkService.getFiles(garcol.getCurrentDir());
+    garcol.filenameDOM.innerHTML = "/";
 }
