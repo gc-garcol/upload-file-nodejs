@@ -5,18 +5,20 @@ const FilePackage = require("../../utils/FilePackage");
  * @property {Object} namespace
  * @author garcol
  */
-class IndexService {
+class IndexNetworkService {
     
     constructor(namespace) {
         this.namespace = namespace;
     }
 
     /**
-     * handle submit file
+     * Handle submit file
+     * @param {String} currentDir 
      */
-    submitFile = () => {
+    submitFile = (currentDir) => {
+        currentDir = "/garcol";
         const formData = FilePackage.builder(this.namespace.submitForm)
-                            .putData('pathfile', 'garcoldir')
+                            .putData('pathfile', currentDir)
                             .build();
 
         console.log(Array.from(formData));
@@ -25,4 +27,4 @@ class IndexService {
 
 }
 
-module.exports = IndexService;
+module.exports = IndexNetworkService;

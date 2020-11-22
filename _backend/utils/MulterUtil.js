@@ -29,17 +29,38 @@ class MulterUtil {
         files.forEach((file) => {
             let fileName = file.originalname;
             let correctDir = `${path.join(ENV.UPLOAD_DIR, req.body.pathfile)}`;
-            if (!fs.existsSync(correctDir)) {
-                fs.mkdirSync(correctDir);
-            }
+            this.createDirIfNotExist(correctDir);
 
             let oldpath = `${path.join(ENV.UPLOAD_DIR, fileName)}`;
             let newpath = `${path.join(correctDir, fileName)}`;
-            fs.rename(oldpath, newpath, (error) => {
-                console.log(error);
-            })
+            this.move(oldpath, newpath);
         });
+    }
+
+    /**
+     * 
+     * @param {String} dirname 
+     */
+    createDirIfNotExist(dirname) {
+        if (!fs.existsSync(dirname)) {
+            console.log(`MulterUtil->createDirIfNotExist | ${dirname}`);
+            fs.mkdirSync(dirname);
+            return false;
         }
+
+        return true;
+    }
+
+    /**
+     * 
+     * @param {String} oldpath 
+     * @param {String} newpath 
+     */
+    move = (oldpath, newpath) => {
+        fs.rename(oldpath, newpath, (error) => {
+            error && console.log.bind(null, error);
+        })
+    }
 
 }
 

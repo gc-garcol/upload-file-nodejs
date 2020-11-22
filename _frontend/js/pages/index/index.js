@@ -1,10 +1,10 @@
-const IndexService = require("./IndexService");
+const IndexNetworkService = require("./IndexNetworkService");
 
 // Namespace
 const garcol = {};
 
 // SERVICE
-const Service = new IndexService(garcol);
+const NetworkService = new IndexNetworkService(garcol);
 
 // CONSTs
 garcol.FILE_NAME = 'myfiles';
@@ -25,5 +25,6 @@ garcol.onResponseSubmitFile = (response) => {
 // CONTROLLERs
 garcol.submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    Service.submitFile();
+    let currentDir = window.location.pathname;
+    NetworkService.submitFile(currentDir);
 });
