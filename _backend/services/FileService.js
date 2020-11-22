@@ -1,6 +1,7 @@
 const UncheckedUtil = require("../utils/UncheckedUtil");
 const fs = require("fs");
 const ENV = require("../../env");
+const MulterUtil = require("../utils/MulterUtil");
 
 /**
  * @author garcol
@@ -28,6 +29,15 @@ class FileService {
         }
 
         return UncheckedUtil.call(callable, errorHandler);
+    }
+
+    /**
+     * 
+     * @param {String} folderName 
+     */
+    createDirIfNotExist = (folderName) => {
+        let correctDir = MulterUtil.getCorrectDirInUploadDir(folderName);
+        return MulterUtil.createDirIfNotExist(correctDir);
     }
 }
 

@@ -28,13 +28,18 @@ class MulterUtil {
         let files = req.files[inputname];
         files.forEach((file) => {
             let fileName = file.originalname;
-            let correctDir = `${path.join(ENV.UPLOAD_DIR, req.body.pathfile)}`;
+
+            let correctDir = this.getCorrectDirInUploadDir(req.body.pathfile);
             this.createDirIfNotExist(correctDir);
 
             let oldpath = `${path.join(ENV.TMP_UPLOAD_DIR, fileName)}`;
             let newpath = `${path.join(correctDir, fileName)}`;
             this.move(oldpath, newpath);
         });
+    }
+
+    getCorrectDirInUploadDir = (dirName) => {
+        return `${path.join(ENV.UPLOAD_DIR, dirName)}`;
     }
 
     /**

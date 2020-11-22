@@ -48,4 +48,17 @@ router.get("/", (req, res) => {
     responseHandler();
 });
 
+/**
+ * [POST] /api/file/createfolder
+ */
+router.post("/createfolder", (req, res) => {
+    let folderNameBase64 = req.query.folderName;
+    let fullFolderName = (folderNameBase64 && Base64.decode(folderNameBase64)) || "";
+
+    console.log(`FileController [URL] ${req.originalUrl} - ${fullFolderName}`);
+
+    let result = FileService.createDirIfNotExist(fullFolderName);
+    res.status(200).send({message: "okie!!"});
+});
+
 module.exports = router;

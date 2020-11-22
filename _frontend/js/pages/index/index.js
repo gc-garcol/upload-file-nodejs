@@ -89,7 +89,7 @@ garcol.onReceiveFiles = (response) => {
     switch (response.status) {
         case 200: {
             let data = response.data.files;
-            let arr = data.split(",");
+            let arr = data == "" ? [] : data.split(",");
             garcol.renderFiles(arr);
             garcol.currentDir.innerHTML = `${garcol.getCurrentDir()}`;
             break;

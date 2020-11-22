@@ -22,13 +22,27 @@ class IndexNetworkService {
                             .build();
 
         console.log(Array.from(formData));
-        ApiCaller.post(this.namespace.BASE_API, formData, this.namespace.onResponseSubmitFile, ApiCaller.MULTI_FILE);                  
+        ApiCaller.post(this.namespace.BASE_API, formData, this.namespace.onResponseSubmitFile, ApiCaller.MULTI_FILE);       
     }
 
+    /**
+     * 
+     * @param {String} currentDir 
+     */
     getFiles = (currentDir) => {
         let encodeDir = Base64.encode(currentDir);
         let url = `${this.namespace.BASE_API}?folderName=${encodeDir}`;
         ApiCaller.get(url, this.namespace.onReceiveFiles);
+    }
+
+    /**
+     * 
+     * @param {String} fullPathDir 
+     */
+    createFolder = (fullPathDir) => {
+        let encodeDir = Base64.encode(fullPathDir);
+        let url = `${this.namespace.BASE_API}/createfolder?folderName=${encodeDir}`;
+        ApiCaller.post(url);
     }
 }
 
