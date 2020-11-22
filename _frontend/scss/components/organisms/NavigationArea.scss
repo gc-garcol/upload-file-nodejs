@@ -1,0 +1,51 @@
+.navigation-area {
+    position: sticky;
+    top: 0;
+    height: 52px;
+    padding: 0 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .navigationgroup {
+        display: flex;
+
+        .navigationbutton {
+
+            display: flex;
+
+            .iconcontainer {
+                width: 30px;
+                height: 30px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 50%;
+                background-color: #dcdcdc;
+                &:hover {
+                    cursor: pointer;
+                    background-color: #ffffff;
+                    border: 4px solid #dcdcdc;
+                    color: #dcdcdc;
+                }
+            }
+        }
+
+        .navigationpath {
+            display: flex;
+            align-items: center;
+            margin-left: 16px;
+        }
+    }
+
+    .menu-bar {
+        margin: 0 10px 0 0;
+        cursor: pointer;
+
+        &.-rotate {
+            transition: 0.2s;
+            transform: rotate(-45deg);
+        }
+    }
+}

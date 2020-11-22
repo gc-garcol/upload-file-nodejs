@@ -1,4 +1,66 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+/**
+ * @author thaivan
+ */
+class FileInformation {
+    
+    /**
+     * 
+     * @param {JsonObject} fileData 
+     */
+    constructor(fileData) {
+        let seperator = "###";
+        let data = fileData.split(seperator);
+        
+        this.fileData = fileData;
+        this.fileName = data[0];
+
+        console.log(data[1]);
+        this.date = new Date(data[1] - 0);
+
+        let clazz = findClassType(this.fileName);
+        this.classType = FILE_CLASS[clazz];
+    }
+
+    render = () => {
+        return `
+            <div onclick="onClickRow(this, '${this.fileData}')" class="file-information js-fileInformation">
+                <div class="iconcontainer">
+                    <i class="${this.classType}" aria-hidden="true"></i>
+                </div>
+                <p class="text">${this.fileName}</p>
+                <p class="date">${this.date.getFullYear()}/${this.date.getMonth()}/${this.date.getDate()} - ${this.date.getHours()}:${this.date.getMinutes()}:${this.date.getSeconds()} </p>
+            </div>
+        `;
+    }
+
+    
+
+}
+
+const findClassType = (fileName) => {
+    let nameData = fileName.split(".");
+    if (nameData.length == 1) {
+        return "folder";
+    }
+
+    if (nameData[nameData.length - 1] === "jpg" || nameData[nameData.length - 1] == "png") {
+        return nameData[nameData.length - 1];
+    }
+
+    return "other";
+}
+
+const FILE_CLASS = {
+    "jpg": "fa fa-file-image-o",
+    "png": "fa fa-file-image-o",
+    "folder": "fa fa-folder",
+    "other": "fa fa-file-o"
+
+}
+
+module.exports = FileInformation;
+},{}],2:[function(require,module,exports){
 const ApiCaller = require("../../utils/ApiCaller");
 const FilePackage = require("../../utils/FilePackage");
 
@@ -29,8 +91,9 @@ class IndexNetworkService {
 }
 
 module.exports = IndexNetworkService;
-},{"../../utils/ApiCaller":3,"../../utils/FilePackage":4}],2:[function(require,module,exports){
+},{"../../utils/ApiCaller":4,"../../utils/FilePackage":5}],3:[function(require,module,exports){
 const IndexNetworkService = require("./IndexNetworkService");
+const FileInformation = require("../../components/FileInformation");
 
 // Namespace
 const garcol = {};
@@ -48,19 +111,83 @@ garcol.POST_UPLOAD = "/api/file";
 garcol.submitBtn = document.getElementById("js-submitBtnID");
 garcol.submitForm = document.getElementById("js-formID");
 garcol.fileContainer = document.getElementById("js-files");
+garcol.submitArea = document.getElementById("js-onHaveFile");
+garcol.fileQuanitty = document.getElementById("js-fileQuantity");
+garcol.menuBar = document.getElementById("js-menuBar");
+garcol.contentArea = document.getElementById("js-contentArea");
+garcol.sidebarArea = document.getElementById("js-sidebarArea");
+garcol.fileArea = document.getElementById("js-fileArea");
+
+// WINDOW FUNCTIONs
+onClickRow = (row, info) => {
+    console.log(row);
+    console.log(info);
+}
+
 
 // HANDLERs
 garcol.onResponseSubmitFile = (response) => {
     console.log(response);
+    
 }
 
+// UI SERVICEs
+garcol.onHideMenuBar = () => {
+    garcol.contentArea.classList.remove("-left");
+    garcol.sidebarArea.classList.remove("-left");
+    garcol.menuBar.classList.remove("-rotate");
+}
+
+garcol.renderFile = () => {
+    garcol.fileArea.innerHTML = 
+        `
+            ${new FileInformation("thaivan.jpg###1606057099000").render()}
+            ${new FileInformation("thaivan.png###1606057099000").render()}
+            ${new FileInformation("thaivan###1606057099000").render()}
+            ${new FileInformation("thaivan.pdf###1606057099000").render()}
+        `
+}
+
+garcol.renderFile();
+
 // CONTROLLERs
+
+/**
+ * [onSubmit]
+ */
 garcol.submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
     let currentDir = window.location.pathname;
     NetworkService.submitFile(currentDir);
 });
-},{"./IndexNetworkService":1}],3:[function(require,module,exports){
+
+/**
+ * [onFileInputChanged]
+ */
+garcol.fileContainer.addEventListener('change', () => {
+    let fileQuantity = garcol.fileContainer.files.length;
+    garcol.fileQuanitty.innerHTML = `${fileQuantity} file${fileQuantity > 1 ? "s" : ""}`;
+    
+    fileQuantity > 0 
+    ? garcol.submitArea.classList.add("-display")
+    : garcol.submitArea.classList.removeClass("-display");
+});
+
+/**
+ * [show menu bar]
+ */
+garcol.menuBar.addEventListener('click', () => {
+    garcol.contentArea.classList.toggle("-left");
+    garcol.sidebarArea.classList.toggle("-left");
+    garcol.menuBar.classList.toggle("-rotate");
+    window.event.cancelBubble = true;
+});
+
+/**
+ * [hide menu bar]
+ */
+garcol.contentArea.addEventListener('click', garcol.onHideMenuBar);
+},{"../../components/FileInformation":1,"./IndexNetworkService":2}],4:[function(require,module,exports){
 const axios = require("axios");
 
 /**
@@ -108,7 +235,7 @@ class ApiCaller {
 
 const INSTANCE = new ApiCaller();
 module.exports = INSTANCE;
-},{"axios":5}],4:[function(require,module,exports){
+},{"axios":6}],5:[function(require,module,exports){
 /**
  * @author garcol
  */
@@ -149,9 +276,9 @@ class Builder {
 
 const INSTANCE = new FilePackage();
 module.exports = INSTANCE;
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":7}],6:[function(require,module,exports){
+},{"./lib/axios":8}],7:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -339,7 +466,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-},{"../core/buildFullPath":13,"../core/createError":14,"./../core/settle":18,"./../helpers/buildURL":22,"./../helpers/cookies":24,"./../helpers/isURLSameOrigin":26,"./../helpers/parseHeaders":28,"./../utils":30}],7:[function(require,module,exports){
+},{"../core/buildFullPath":14,"../core/createError":15,"./../core/settle":19,"./../helpers/buildURL":23,"./../helpers/cookies":25,"./../helpers/isURLSameOrigin":27,"./../helpers/parseHeaders":29,"./../utils":31}],8:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -394,7 +521,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":8,"./cancel/CancelToken":9,"./cancel/isCancel":10,"./core/Axios":11,"./core/mergeConfig":17,"./defaults":20,"./helpers/bind":21,"./helpers/spread":29,"./utils":30}],8:[function(require,module,exports){
+},{"./cancel/Cancel":9,"./cancel/CancelToken":10,"./cancel/isCancel":11,"./core/Axios":12,"./core/mergeConfig":18,"./defaults":21,"./helpers/bind":22,"./helpers/spread":30,"./utils":31}],9:[function(require,module,exports){
 'use strict';
 
 /**
@@ -415,7 +542,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -474,14 +601,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":8}],10:[function(require,module,exports){
+},{"./Cancel":9}],11:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -577,7 +704,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"../helpers/buildURL":22,"./../utils":30,"./InterceptorManager":12,"./dispatchRequest":15,"./mergeConfig":17}],12:[function(require,module,exports){
+},{"../helpers/buildURL":23,"./../utils":31,"./InterceptorManager":13,"./dispatchRequest":16,"./mergeConfig":18}],13:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -631,7 +758,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":30}],13:[function(require,module,exports){
+},{"./../utils":31}],14:[function(require,module,exports){
 'use strict';
 
 var isAbsoluteURL = require('../helpers/isAbsoluteURL');
@@ -653,7 +780,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
   return requestedURL;
 };
 
-},{"../helpers/combineURLs":23,"../helpers/isAbsoluteURL":25}],14:[function(require,module,exports){
+},{"../helpers/combineURLs":24,"../helpers/isAbsoluteURL":26}],15:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -673,7 +800,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":16}],15:[function(require,module,exports){
+},{"./enhanceError":17}],16:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -754,7 +881,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":10,"../defaults":20,"./../utils":30,"./transformData":19}],16:[function(require,module,exports){
+},{"../cancel/isCancel":11,"../defaults":21,"./../utils":31,"./transformData":20}],17:[function(require,module,exports){
 'use strict';
 
 /**
@@ -798,7 +925,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -887,7 +1014,7 @@ module.exports = function mergeConfig(config1, config2) {
   return config;
 };
 
-},{"../utils":30}],18:[function(require,module,exports){
+},{"../utils":31}],19:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -914,7 +1041,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":14}],19:[function(require,module,exports){
+},{"./createError":15}],20:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -936,7 +1063,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../utils":30}],20:[function(require,module,exports){
+},{"./../utils":31}],21:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -1038,7 +1165,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this)}).call(this,require('_process'))
-},{"./adapters/http":6,"./adapters/xhr":6,"./helpers/normalizeHeaderName":27,"./utils":30,"_process":31}],21:[function(require,module,exports){
+},{"./adapters/http":7,"./adapters/xhr":7,"./helpers/normalizeHeaderName":28,"./utils":31,"_process":32}],22:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -1051,7 +1178,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -1123,7 +1250,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":30}],23:[function(require,module,exports){
+},{"./../utils":31}],24:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1139,7 +1266,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -1194,7 +1321,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":30}],25:[function(require,module,exports){
+},{"./../utils":31}],26:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1210,7 +1337,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -1280,7 +1407,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":30}],27:[function(require,module,exports){
+},{"./../utils":31}],28:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -1294,7 +1421,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":30}],28:[function(require,module,exports){
+},{"../utils":31}],29:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -1349,7 +1476,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":30}],29:[function(require,module,exports){
+},{"./../utils":31}],30:[function(require,module,exports){
 'use strict';
 
 /**
@@ -1378,7 +1505,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -1731,7 +1858,7 @@ module.exports = {
   stripBOM: stripBOM
 };
 
-},{"./helpers/bind":21}],31:[function(require,module,exports){
+},{"./helpers/bind":22}],32:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -1917,4 +2044,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[2]);
+},{}]},{},[3]);

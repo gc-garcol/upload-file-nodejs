@@ -22,12 +22,12 @@ router.post('/', uploadManyFiles, (req, res) => {
     console.log(`FileController [URL] ${req.originalUrl}`);
 
     if (req.files.length <= 0) {
-        return res.send(`You must select at least 1 file or more.`);
+        return res.status(HttpStatus.BAD_REQUEST).send({message: `You must select at least 1 file or more.`});
     }
 
     MulterUtil.moveFile(req, INPUT_FILES);
 
-    res.send(`Your files has been uploaded.`);
+    return res.status(HttpStatus.OK).send({message: `Your files has been uploaded.`});
 });
 
 /**

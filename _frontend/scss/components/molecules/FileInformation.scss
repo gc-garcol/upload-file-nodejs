@@ -1,0 +1,33 @@
+.file-information {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+
+    &:nth-child(2n) {
+        background-color: #f2f2f2;
+    }
+
+    &:nth-child(2n + 1) {
+        background-color: #fdfdfe;
+    }
+
+    &:hover {
+        background-color: #dadada;
+        cursor: pointer;
+    }
+
+    .iconcontainer {
+        // flex-grow: 2;
+        width: 20%;
+    }
+
+    .text {
+        // flex-grow: 4;
+        width: 40%;
+    }
+
+    .date {
+        // flex-grow: 4;
+        width: 40%;
+    }
+}

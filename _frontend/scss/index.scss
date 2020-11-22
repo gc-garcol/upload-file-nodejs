@@ -3,10 +3,30 @@
 @import './bases/common';
 
 // ATOMs
-@import './components/atoms/input';
 @import './components/atoms/button';
+@import './components/atoms/icon';
+@import './components/atoms/input';
+@import './components/atoms/label';
+
 
 // MOLECULEs
+@import './components/molecules/FileInformation';
 
 // ORGANISMs
+@import './components/organisms/FileArea';
+@import './components/organisms/MenuArea';
+@import './components/organisms/SideBarArea';
+@import './components/organisms/NavigationArea';
+@import './components/organisms/DisplayArea';
+
+.contentcontainer {
+    transition: 0.5s ease-in-out;
+
+    &.-left {
+        transform: translateX(-270px);
+    }
+}
+
+
+
 

@@ -5,15 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>File</title>
     <link rel="stylesheet" href="/garcol/css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" />
 </head>
 <body>
-    <form id="js-formID" action="/api/file" method="POST" enctype="multipart/form-data">
-        <div>
-            <label for="js-files">File</label>
-            <input id="js-files" class="input" type="file" multiple name="myfiles">
+
+    <div id="js-contentArea" class="contentcontainer">
+        <div class="navigation-area">
+            <div class="navigationgroup">
+                <div class="navigationbutton">
+                    <div id="js-back" class="iconcontainer">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                    </div>
+                    <!-- <div class="iconcontainer">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </div> -->
+                </div>
+                <div id="js-currentFolder" class="navigationpath">
+                    Home
+                </div>
+            </div>
+            <div id="js-menuBar" class="menu-bar">
+                <i class="fa fa-bars"></i>
+            </div>
         </div>
-        <button type="submit" id="js-submitBtnID" class="submitbutton">Submit</button>
-    </form>
+
+        <div class="display-area">
+            <div class="filesimulator">
+                <img class="image" src="/myfile/garcol/zero-two.gif" alt="">
+            </div>
+        </div>
+    
+        <div id="js-fileArea" class="file-area">
+        </div>    
+    </div>
+
+    <div id="js-sidebarArea" class="sidebar-area">
+        <form id="js-formID" action="/api/file" method="POST" enctype="multipart/form-data">
+            <div class="sidebaritem -nopadding">
+                <label for="js-files"><i class="fa fa-upload" aria-hidden="true"></i> Upload</label>
+                <input id="js-files" class="fileinput -disable" type="file" multiple name="myfiles">
+            </div>
+            <div id="js-onHaveFile" class="submitarea">
+                <div id="js-fileQuantity" class="sidebaritem -nohover"></div>
+                <div id="js-submitBtnID" class="sidebaritem"> <i class="fa fa-paper-plane" aria-hidden="true"></i> Submit</div>
+            </div>
+        </form>
+    </div>
+
     <script src="/garcol/js/pages/index/index.js"></script>
 </body>
 </html>
