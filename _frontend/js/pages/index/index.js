@@ -11,7 +11,10 @@ const NetworkService = new IndexNetworkService(garcol);
 garcol.FILE_NAME = 'myfiles';
 
 // URLs
-garcol.POST_UPLOAD = "/api/file";
+garcol.BASE_API = "/api/file";
+garcol.FILES = "/myfile";
+garcol.BASE = "/garcol";
+
 
 // SELECTORs
 garcol.submitBtn = document.getElementById("js-submitBtnID");
@@ -23,18 +26,60 @@ garcol.menuBar = document.getElementById("js-menuBar");
 garcol.contentArea = document.getElementById("js-contentArea");
 garcol.sidebarArea = document.getElementById("js-sidebarArea");
 garcol.fileArea = document.getElementById("js-fileArea");
+garcol.image = document.getElementById("js-image");
 
 // WINDOW FUNCTIONs
-onClickRow = (row, info) => {
-    console.log(row);
-    console.log(info);
+/**
+ * Coupling -> need to decouple
+ * classType: 'folder', 'other', 'jpg', 'png'
+ * 
+ * @param {String} extra photo link
+ */
+onClickRow = (row, info, classType, extra) => {
+    console.log(`${row} - ${info} - ${classType} - ${extra}`);
+    switch(classType) {
+        case 'jpg':
+        case 'png':
+        case 'gif':    
+            garcol.image.src = `${window.location.origin}${garcol.FILES}${extra}`;
+            break;  
+        case 'other':
+            garcol.image.src = `${window.location.origin}${garcol.BASE}/img/file.png`;
+            break;    
+        case 'folder':
+            break;    
+    }
 }
 
+// VARIABLEs
+garcol.folder = [];
+
+// UTILs
+garcol.getCurrentDir = () => {
+    return garcol.folder.join("/");
+}
 
 // HANDLERs
+/**
+ * 
+ * @param {HttpServletResponse} response 
+ */
 garcol.onResponseSubmitFile = (response) => {
     console.log(response);
-    
+}
+
+/**
+ * 
+ * @param {HttpServletResponse} response 
+ */
+garcol.onReceiveFiles = (response) => {
+    console.log(response);
+    switch (response.status) {
+        case 200: {
+            
+            break;
+        }
+    }
 }
 
 // UI SERVICEs
@@ -44,18 +89,20 @@ garcol.onHideMenuBar = () => {
     garcol.menuBar.classList.remove("-rotate");
 }
 
-garcol.renderFile = () => {
+/**
+ * 
+ * @param {Array} data 
+ */
+garcol.renderFiles = (data) => {
     garcol.fileArea.innerHTML = 
         `
-            ${new FileInformation("thaivan.jpg###1606057099000").render()}
-            ${new FileInformation("thaivan.png###1606057099000").render()}
-            ${new FileInformation("thaivan###1606057099000").render()}
-            ${new FileInformation("thaivan.pdf###1606057099000").render()}
+            ${new FileInformation("zero-two.gif", garcol.getCurrentDir()).render()}
+            ${new FileInformation("zero-two.git", garcol.getCurrentDir()).render()}
+            ${new FileInformation("zero-two.gif", garcol.getCurrentDir()).render()}
+            ${new FileInformation("zero-two.gif", garcol.getCurrentDir()).render()}
         `
 }
-
-garcol.renderFile();
-
+garcol.renderFiles();
 // CONTROLLERs
 
 /**
@@ -63,8 +110,7 @@ garcol.renderFile();
  */
 garcol.submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    let currentDir = window.location.pathname;
-    NetworkService.submitFile(currentDir);
+    NetworkService.submitFile(garcol.folder.join("/"));
 });
 
 /**
@@ -93,3 +139,33 @@ garcol.menuBar.addEventListener('click', () => {
  * [hide menu bar]
  */
 garcol.contentArea.addEventListener('click', garcol.onHideMenuBar);
+
+/**
+ * 
+ */
+garcol.loadFiles = () => {
+    NetworkService.getFiles(garcol.folder.join());
+}
+
+/**
+ * [go to parent folder]
+ */
+garcol.goBack = () => {
+    garcol.folder.pop();
+    garcol.loadFiles();
+}
+
+/**
+ * [go to child folder]
+ */
+garcol.goToFolder = (folderName) => {
+    garcol.folder.push(folderName);
+    garcol.loadFiles();
+}
+
+/**
+ * [window onload]
+ */
+window.onload = () => {
+    NetworkService.getFiles(garcol.getCurrentDir());
+}

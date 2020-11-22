@@ -43,7 +43,7 @@ router.get("/", (req, res) => {
 
     let responseHandler = (files === null) 
     ? ResponseBuilder.build(res, HttpStatus.NOT_FOUND, {message: "folder not found!!"})
-    : ResponseBuilder.build(res, HttpStatus.OK, {message: files.join()})
+    : ResponseBuilder.build(res, HttpStatus.OK, {files: files.join()})
 
     responseHandler();
 });

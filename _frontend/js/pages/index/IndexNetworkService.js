@@ -1,5 +1,6 @@
 const ApiCaller = require("../../utils/ApiCaller");
 const FilePackage = require("../../utils/FilePackage");
+const Base64 = require("js-base64");
 
 /**
  * @property {Object} namespace
@@ -16,15 +17,19 @@ class IndexNetworkService {
      * @param {String} currentDir 
      */
     submitFile = (currentDir) => {
-        currentDir = "/garcol";
         const formData = FilePackage.builder(this.namespace.submitForm)
                             .putData('pathfile', currentDir)
                             .build();
 
         console.log(Array.from(formData));
-        ApiCaller.post(this.namespace.POST_UPLOAD, formData, this.namespace.onResponseSubmitFile, ApiCaller.MULTI_FILE);                  
+        ApiCaller.post(this.namespace.BASE_API, formData, this.namespace.onResponseSubmitFile, ApiCaller.MULTI_FILE);                  
     }
 
+    getFiles = (currentDir) => {
+        let encodeDir = Base64.encode(currentDir);
+        let url = `${this.namespace.BASE_API}?folderName=${encodeDir}`;
+        ApiCaller.get(url, this.namespace.onReceiveFiles);
+    }
 }
 
 module.exports = IndexNetworkService;

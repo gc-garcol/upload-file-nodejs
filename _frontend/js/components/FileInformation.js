@@ -7,25 +7,22 @@ class FileInformation {
      * 
      * @param {JsonObject} fileData 
      */
-    constructor(fileData) {
-        let seperator = "###";
-        let data = fileData.split(seperator);
-        
+    constructor(fileData, currentDir) {
         this.fileData = fileData;
-        this.fileName = data[0];
+        this.fileName = fileData;
+        this.currentDir = currentDir;
 
-        console.log(data[1]);
-        this.date = new Date(data[1] - 0);
-
-        let clazz = findClassType(this.fileName);
-        this.classType = FILE_CLASS[clazz];
+        this.date = new Date();
+        console.log(fileData);
+        this.classType = findClassType(this.fileName);
+        this.clazz = FILE_CLASS[this.classType];
     }
 
     render = () => {
         return `
-            <div onclick="onClickRow(this, '${this.fileData}')" class="file-information js-fileInformation">
+            <div onclick="onClickRow(this, '${this.fileData}', '${this.classType}', '${this.currentDir}/${this.fileData}')" class="file-information js-fileInformation">
                 <div class="iconcontainer">
-                    <i class="${this.classType}" aria-hidden="true"></i>
+                    <i class="${this.clazz}" aria-hidden="true"></i>
                 </div>
                 <p class="text">${this.fileName}</p>
                 <p class="date">${this.date.getFullYear()}/${this.date.getMonth()}/${this.date.getDate()} - ${this.date.getHours()}:${this.date.getMinutes()}:${this.date.getSeconds()} </p>
@@ -43,7 +40,7 @@ const findClassType = (fileName) => {
         return "folder";
     }
 
-    if (nameData[nameData.length - 1] === "jpg" || nameData[nameData.length - 1] == "png") {
+    if (nameData[nameData.length - 1] === "jpg" || nameData[nameData.length - 1] == "png" || nameData[nameData.length - 1] == "gif") {
         return nameData[nameData.length - 1];
     }
 
@@ -53,6 +50,7 @@ const findClassType = (fileName) => {
 const FILE_CLASS = {
     "jpg": "fa fa-file-image-o",
     "png": "fa fa-file-image-o",
+    "gif": "fa fa-file-image-o",
     "folder": "fa fa-folder",
     "other": "fa fa-file-o"
 
