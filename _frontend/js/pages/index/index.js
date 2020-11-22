@@ -29,6 +29,9 @@ garcol.fileArea = document.getElementById("js-fileArea");
 garcol.image = document.getElementById("js-image");
 garcol.currentDir = document.getElementById("js-currentFolder");
 garcol.goBackDOM = document.getElementById("js-back");
+garcol.folderNameDOM = document.getElementById("js-folderCreateName");
+garcol.createFolderBtnDOM = document.getElementById("js-createFolderBtn");
+
 
 // WINDOW FUNCTIONs
 /**
@@ -75,6 +78,7 @@ garcol.onResponseSubmitFile = (response) => {
     switch(response.status) {
         case 200: {
             NetworkService.getFiles(garcol.getCurrentDir());
+            garcol.closeSideBar();
             break;
         }
     }
@@ -92,6 +96,21 @@ garcol.onReceiveFiles = (response) => {
             let arr = data == "" ? [] : data.split(",");
             garcol.renderFiles(arr);
             garcol.currentDir.innerHTML = `${garcol.getCurrentDir()}`;
+            break;
+        }
+    }
+}
+
+/**
+ * 
+ * @param {HttpServletResponse} response 
+ */
+garcol.onResponseCreateFolder = (response) => {
+    console.log(response);
+    switch (response.status) {
+        case 200: {
+            NetworkService.getFiles(garcol.getCurrentDir());
+            garcol.closeSideBar();
             break;
         }
     }
@@ -115,6 +134,16 @@ garcol.renderFiles = (data) => {
     });
     garcol.fileArea.innerHTML = renderData.join("\n");
 }
+
+/**
+ * close sidebar
+ */
+garcol.closeSideBar = () => {
+    garcol.contentArea.classList.toggle("-left");
+    garcol.sidebarArea.classList.toggle("-left");
+    garcol.menuBar.classList.toggle("-rotate");
+}
+
 // CONTROLLERs
 
 /**
@@ -141,9 +170,7 @@ garcol.fileContainer.addEventListener('change', () => {
  * [show menu bar]
  */
 garcol.menuBar.addEventListener('click', () => {
-    garcol.contentArea.classList.toggle("-left");
-    garcol.sidebarArea.classList.toggle("-left");
-    garcol.menuBar.classList.toggle("-rotate");
+    garcol.closeSideBar();
     window.event.cancelBubble = true;
 });
 
@@ -183,6 +210,16 @@ garcol.goToFolder = (folderName) => {
  */
 garcol.goBackDOM.addEventListener('click', () => {
     garcol.goBack();
+});
+
+/**
+ * [on create folder]
+ */
+garcol.createFolderBtnDOM.addEventListener('click', () => {
+    let dirname = garcol.folderNameDOM.value;
+    let fullDirName = `${garcol.getCurrentDir() == "/" ? "" : garcol.getCurrentDir()}/${dirname}`;
+    console.log(dirname +  " full " + fullDirName);
+    NetworkService.createFolder(fullDirName);
 });
 
 /**

@@ -42,7 +42,7 @@ class IndexNetworkService {
     createFolder = (fullPathDir) => {
         let encodeDir = Base64.encode(fullPathDir);
         let url = `${this.namespace.BASE_API}/createfolder?folderName=${encodeDir}`;
-        ApiCaller.post(url);
+        ApiCaller.post(url, null, this.namespace.onResponseCreateFolder);
     }
 }
 
