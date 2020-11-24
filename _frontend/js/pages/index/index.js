@@ -28,10 +28,12 @@ garcol.sidebarArea = document.getElementById("js-sidebarArea");
 garcol.fileArea = document.getElementById("js-fileArea");
 garcol.image = document.getElementById("js-image");
 garcol.currentDir = document.getElementById("js-currentFolder");
-garcol.goBackDOM = document.getElementById("js-back");
 garcol.folderNameDOM = document.getElementById("js-folderCreateName");
 garcol.createFolderBtnDOM = document.getElementById("js-createFolderBtn");
 garcol.filenameDOM = document.getElementById("js-filename");
+
+garcol.goBackDOM = document.getElementsByClassName("js-back");
+
 
 
 // WINDOW FUNCTIONs
@@ -212,9 +214,11 @@ garcol.goToFolder = (folderName) => {
 /**
  * on click go back
  */
-garcol.goBackDOM.addEventListener('click', () => {
-    garcol.goBack();
-});
+Array.from(garcol.goBackDOM).forEach((element) => {
+    element.addEventListener('click', () => {
+        garcol.goBack();
+    });
+})
 
 /**
  * [on create folder]

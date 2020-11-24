@@ -1,16 +1,16 @@
 .display-area {
-    min-height: 360px;
+    min-height: 300px;
     position: sticky;
     top: 50px;
 
     background-color: #f8f8f8;
 
     display: flex;
-    align-items: center;;
+    flex-direction: column;
 
     .filesimulator {
-        height: 350px;
-        width: 350px;
+        height: 290px;
+        width: 290px;
         background-color: #ffffff;
         margin-left: 5px;
         overflow: hidden;
@@ -20,11 +20,39 @@
         align-items: center;
 
         .image {
-            height: 100%;
+            width: 100%;
         }
     }
 
     .filename {
         margin-left: 32px;
+        max-width: 100%;
+        white-space: nowrap;
+    }
+
+    &__group-btn {
+        width: 100%;
+        padding: 16px;
+        display: flex;
+        justify-content: start;
+
+        .fa.fa-times {
+            font-size: 30px;
+            color: red;
+        }
+    }
+
+    .backtoparent {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        &:hover {
+            color: green;
+        }
+
+        .fa-chevron-left {
+            font-size: 30px;
+        }
     }
 }

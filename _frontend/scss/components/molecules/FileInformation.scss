@@ -24,11 +24,13 @@
     .text {
         // flex-grow: 4;
         width: 40%;
+        word-break: break-all;
     }
 
     .date {
         // flex-grow: 4;
         width: 40%;
+        margin-left: 8px;
     }
 
     .highlight {
