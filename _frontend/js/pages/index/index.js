@@ -262,6 +262,11 @@ Array.from(garcol.goBackDOM).forEach((element) => {
  * [on create folder]
  */
 garcol.createFolderBtnDOM.addEventListener('click', () => {
+    if (garcol.folderNameDOM.value.trim() == '') {
+        console.log('cannot create empty folder');
+        return;
+    }
+    
     let dirname = garcol.folderNameDOM.value;
     let fullDirName = `${garcol.getCurrentDir() == "/" ? "" : garcol.getCurrentDir()}/${dirname}`;
     console.log(dirname +  " full " + fullDirName);

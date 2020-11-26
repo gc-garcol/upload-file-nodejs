@@ -27,6 +27,15 @@
     }
 }
 
+@media (min-width: 768px) {
+    .menu-bar {
+        visibility: hidden;
+    }
+
+    .sidebar-area {
+        transform: translateX(0);
+    }
+}
 
 
 
