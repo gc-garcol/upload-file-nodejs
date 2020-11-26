@@ -5,6 +5,9 @@ npm install
 
 ### RUN
 ```
+gulp dev
+```
+```
 npm run server
 ```
 
