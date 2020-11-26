@@ -16,7 +16,7 @@ class MulterUtil {
 
     }
 
-    getBaseStorage = () => {
+    getBaseStorage(){
         return storage;
     }
 
@@ -24,7 +24,7 @@ class MulterUtil {
      * 
      * @param {HttpServletRequest} req 
      */
-    moveFile = (req, inputname) => {
+    moveFile(req, inputname){
         let files = req.files[inputname];
         files.forEach((file) => {
             let fileName = file.originalname;
@@ -38,7 +38,7 @@ class MulterUtil {
         });
     }
 
-    getCorrectDirInUploadDir = (dirName) => {
+    getCorrectDirInUploadDir(dirName){
         return `${path.join(ENV.UPLOAD_DIR, dirName)}`;
     }
 
@@ -61,7 +61,7 @@ class MulterUtil {
      * @param {String} oldpath 
      * @param {String} newpath 
      */
-    move = (oldpath, newpath) => {
+    move(oldpath, newpath){
         fs.rename(oldpath, newpath, (error) => {
             error && console.log.bind(null, error);
         })

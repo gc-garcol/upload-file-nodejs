@@ -1,5 +1,6 @@
 const UncheckedUtil = require("../utils/UncheckedUtil");
 const fs = require("fs");
+const rimraf = require("rimraf");
 const ENV = require("../../env");
 const MulterUtil = require("../utils/MulterUtil");
 
@@ -16,7 +17,7 @@ class FileService {
      * @param {String} folderName 
      * @param {Function} errorHandler 
      */
-    getFolder = (folderName, errorHandler) => {
+    getFolder(folderName, errorHandler) {
         const files = [];
 
         let folder = folderName ? `${ENV.UPLOAD_DIR}/${folderName}` : `${ENV.UPLOAD_DIR}`;
@@ -35,10 +36,19 @@ class FileService {
      * 
      * @param {String} folderName 
      */
-    createDirIfNotExist = (folderName) => {
+    createDirIfNotExist(folderName) {
         let correctDir = MulterUtil.getCorrectDirInUploadDir(folderName);
         return MulterUtil.createDirIfNotExist(correctDir);
     }
+
+    /**
+     * 
+     * @param {String} element 
+     */
+    deleteElement(element, callback) {
+        rimraf(`${ENV.UPLOAD_DIR}${element}`, callback);
+    } 
+
 }
 
 const INSTANCE = new FileService();

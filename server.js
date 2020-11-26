@@ -29,7 +29,12 @@ app.get(`${ENV.DEFAUL_HOME_URL}`, (req, res) => {
     res.redirect(`${ENV.HOME_URL}`);
 });
 
+const middleware = (req, res, next) => {
+    console.log(`Endpoint: ${req.originalUrl}`);
+    next();
+}
+
 // ENDPOINTs
-app.use(`${ENV.BASE_API_FILE}`, FileController);
+app.use(`${ENV.BASE_API_FILE}`, middleware, FileController);
 
 app.listen(PORT);

@@ -60,6 +60,25 @@ class ApiCaller {
         finallyCallback && finallyCallback();
     }
 
+    /**
+     * 
+     * @param {String} url 
+     * @param {Function} handler 
+     * @param {Function} errorCallback 
+     * @param {Function} finallyCallback 
+     */
+    del = async (url, handler, errorCallback, finallyCallback) => {
+        try {
+            let response = await axios.delete(url);
+            handler(response);
+        } catch(error) {
+            console.log(error);
+            errorCallback && errorCallback(error);
+        }
+
+        finallyCallback && finallyCallback();
+    }
+
 }
 
 const INSTANCE = new ApiCaller();

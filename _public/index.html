@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File</title>
+    <title>File Uploading</title>
     <link rel="stylesheet" href="/garcol/css/index.css">
     <link rel="stylesheet" href="/garcol/standalone/font-awesome.min.css">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" /> -->
 </head>
 <body>
 
@@ -28,13 +27,17 @@
         </div>
 
         <div class="display-area">
-            <h2 id="js-filename" class="filename"></h2>
-            <div class="filesimulator">
-                <img id="js-image" class="image" src="" alt="">
+            <div class="display-area__file-simulator-container">
+                <div class="filesimulator">
+                    <img id="js-image" class="image" src="/garcol/img/folder.jpg" alt="">
+                </div>
+                <div class="icon-container">
+                    <i class="fa fa-trash" id="js-deleteElement" aria-hidden="true"></i>
+                </div>
             </div>
             <div class="display-area__group-btn">
                 <div class="backtoparent js-back"><i class="fa fa-chevron-left" aria-hidden="true"></i> Back</div>
-                <!-- <div id="js-delete"><i class="fa fa-times"></i> Delete</div> -->
+                <p id="js-filename" class="filename"></p>
             </div>
         </div>
     
@@ -57,6 +60,10 @@
         <div class="foldercreate">
             <input id="js-folderCreateName" placeholder="folder name" autocomplete="off" class="input">
             <div id="js-createFolderBtn" class="sidebaritem"> <i class="fa fa-paper-plane" aria-hidden="true"></i> Create folder</div>
+        </div>
+
+        <div class="deletefolder">
+            <div id="js-deleteFolder" class="sidebaritem"> <i class="fa fa-trash" aria-hidden="true"></i> Delete folder</div>
         </div>
         
     </div>

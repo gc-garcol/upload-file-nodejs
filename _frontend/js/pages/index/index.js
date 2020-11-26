@@ -31,10 +31,13 @@ garcol.currentDir = document.getElementById("js-currentFolder");
 garcol.folderNameDOM = document.getElementById("js-folderCreateName");
 garcol.createFolderBtnDOM = document.getElementById("js-createFolderBtn");
 garcol.filenameDOM = document.getElementById("js-filename");
-
 garcol.goBackDOM = document.getElementsByClassName("js-back");
+garcol.deleteElementDOM = document.getElementById("js-deleteElement");
+garcol.deleteFolderDOM = document.getElementById("js-deleteFolder");
 
-
+// VARIABLEs
+garcol.folder = [];
+garcol.classTypeOFClickedElement = 'folder';
 
 // WINDOW FUNCTIONs
 /**
@@ -60,12 +63,9 @@ onClickRow = (row, info, classType, extra) => {
             NetworkService.getFiles(garcol.getCurrentDir());
             break;    
     }
-
+    garcol.classTypeOFClickedElement = classType;
     garcol.filenameDOM.innerHTML = info;
 }
-
-// VARIABLEs
-garcol.folder = [];
 
 // UTILs
 garcol.getCurrentDir = () => {
@@ -93,6 +93,23 @@ garcol.onResponseSubmitFile = (response) => {
  * 
  * @param {HttpServletResponse} response 
  */
+garcol.onResponseDelete = (response) => {
+    console.log(response);
+    switch(response.status) {
+        case 200: {
+            garcol.folder.pop();
+            garcol.filenameDOM.innerHTML  = garcol.getCurrentDir();
+            NetworkService.getFiles(garcol.getCurrentDir());
+            garcol.closeSideBar();
+            break;
+        }
+    }
+}
+
+/**
+ * 
+ * @param {HttpServletResponse} response 
+ */
 garcol.onReceiveFiles = (response) => {
     console.log(response);
     switch (response.status) {
@@ -101,6 +118,7 @@ garcol.onReceiveFiles = (response) => {
             let arr = data == "" ? [] : data.split(",");
             garcol.renderFiles(arr);
             garcol.currentDir.innerHTML = `${garcol.getCurrentDir()}`;
+            garcol.onSlidePathNameToEnd ();
             break;
         }
     }
@@ -115,6 +133,7 @@ garcol.onResponseCreateFolder = (response) => {
     switch (response.status) {
         case 200: {
             NetworkService.getFiles(garcol.getCurrentDir());
+            garcol.folderNameDOM.value = "";
             garcol.closeSideBar();
             break;
         }
@@ -122,10 +141,20 @@ garcol.onResponseCreateFolder = (response) => {
 }
 
 // UI SERVICEs
+/**
+ * 
+ */
 garcol.onHideMenuBar = () => {
     garcol.contentArea.classList.remove("-left");
     garcol.sidebarArea.classList.remove("-left");
     garcol.menuBar.classList.remove("-rotate");
+}
+
+/**
+ * 
+ */
+garcol.onSlidePathNameToEnd = () => {
+    garcol.currentDir.scrollLeft = garcol.currentDir.scrollWidth;
 }
 
 /**
@@ -144,6 +173,15 @@ garcol.renderFiles = (data) => {
  * close sidebar
  */
 garcol.closeSideBar = () => {
+    garcol.contentArea.classList.remove("-left");
+    garcol.sidebarArea.classList.remove("-left");
+    garcol.menuBar.classList.remove("-rotate");
+}
+
+/**
+ * toggleSideBar
+ */
+garcol.toggleSideBar = () => {
     garcol.contentArea.classList.toggle("-left");
     garcol.sidebarArea.classList.toggle("-left");
     garcol.menuBar.classList.toggle("-rotate");
@@ -175,7 +213,7 @@ garcol.fileContainer.addEventListener('change', () => {
  * [show menu bar]
  */
 garcol.menuBar.addEventListener('click', () => {
-    garcol.closeSideBar();
+    garcol.toggleSideBar();
     window.event.cancelBubble = true;
 });
 
@@ -237,3 +275,20 @@ window.onload = () => {
     NetworkService.getFiles(garcol.getCurrentDir());
     garcol.filenameDOM.innerHTML = "/";
 }
+
+/**
+ * 
+ */
+garcol.deleteFolderDOM.addEventListener('click', () => {
+    NetworkService.deleteElement(garcol.getCurrentDir());
+})
+
+/**
+ * 
+ */
+garcol.deleteElementDOM.addEventListener('click', () => {
+    let elementPath = (garcol.classTypeOFClickedElement == 'folder')
+        ? garcol.getCurrentDir()
+        : `${garcol.getCurrentDir()}/${garcol.filenameDOM.innerHTML}`;
+    NetworkService.deleteElement(elementPath);
+})

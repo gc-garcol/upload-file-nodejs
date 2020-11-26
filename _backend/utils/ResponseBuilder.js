@@ -12,7 +12,7 @@ class ResponseBuilder {
      * @param {Integer} httpStatus 
      * @param {JsonObject} data 
      */
-    build = (res, httpStatus, data = {}) => {
+    build(res, httpStatus, data = {}) {
         return res.status(httpStatus).send.bind(res, data);
     }
 

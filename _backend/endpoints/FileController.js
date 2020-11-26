@@ -61,4 +61,24 @@ router.post("/createfolder", (req, res) => {
     res.status(200).send({message: "okie!!"});
 });
 
+/**
+ * 
+ */
+router.delete("/", (req, res) => {
+    let elemmentBase64 = req.query.element;
+    console.log(`element ${elemmentBase64}`);
+    let fullPathElement = (elemmentBase64 && Base64.decode(elemmentBase64)) || "";
+
+    console.log(`FileControllers [URL] ${req.originalUrl} - ${fullPathElement}`);
+
+    if (fullPathElement == "/") {
+        res.status(400).send({message: "Cannot delete root!!"});
+        return;
+    }
+
+    FileService.deleteElement(`${fullPathElement}`, () => {
+        res.status(200).send({message: "okie!!"});
+    })
+});
+
 module.exports = router;

@@ -12,7 +12,7 @@ class UncheckedUtil {
      * @param {Funtion} errorHandler 
      * @returns callable result
      */
-    call = (callable, errorHandler) => {
+    call(callable, errorHandler) {
         try {
             return callable();
         } catch(error) {
@@ -27,7 +27,7 @@ class UncheckedUtil {
      * @param {Funtion} runnable 
      * @param {Funtion} errorHandler 
      */
-    run = (runnable, errorHandler) => {
+    run(runnable, errorHandler) {
         try {
             runnable();
         } catch(error) {

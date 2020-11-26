@@ -44,6 +44,16 @@ class IndexNetworkService {
         let url = `${this.namespace.BASE_API}/createfolder?folderName=${encodeDir}`;
         ApiCaller.post(url, null, this.namespace.onResponseCreateFolder);
     }
+
+    /**
+     * 
+     * @param {String} fullPathDir 
+     */
+    deleteElement = (fullPathDir) => {
+        let encodeDir = Base64.encode(fullPathDir);
+        let url = `${this.namespace.BASE_API}?element=${encodeDir}`;
+        ApiCaller.del(url, this.namespace.onResponseDelete);
+    }
 }
 
 module.exports = IndexNetworkService;
