@@ -97,7 +97,10 @@ garcol.onResponseDelete = (response) => {
     console.log(response);
     switch(response.status) {
         case 200: {
-            garcol.folder.pop();
+            if (garcol.classTypeOFClickedElement == 'folder') {
+                garcol.folder.pop();
+            }
+            
             garcol.filenameDOM.innerHTML  = garcol.getCurrentDir();
             NetworkService.getFiles(garcol.getCurrentDir());
             garcol.closeSideBar();
@@ -266,7 +269,7 @@ garcol.createFolderBtnDOM.addEventListener('click', () => {
         console.log('cannot create empty folder');
         return;
     }
-    
+
     let dirname = garcol.folderNameDOM.value;
     let fullDirName = `${garcol.getCurrentDir() == "/" ? "" : garcol.getCurrentDir()}/${dirname}`;
     console.log(dirname +  " full " + fullDirName);
