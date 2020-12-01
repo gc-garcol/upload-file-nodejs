@@ -25,6 +25,11 @@
         // flex-grow: 4;
         width: 60%;
         word-break: break-all;
+        margin-bottom: 0;
+    }
+
+    i.fa.fa-trash {
+        margin-top: 4px;
     }
 
     &__button-group {
