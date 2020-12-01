@@ -18,22 +18,30 @@ gulp.task('build-js', () => {
 });
 
 gulp.task('default',
-    gulp.series(['build-css', 'build-js'])
+    gulp.series('build-css', 'build-js', () => {
+        gulp.watch('_frontend/scss/**/*.scss', (done) => {
+            gulp.series(['build-css'])(done);
+        });
+
+        gulp.watch('_frontend/js/**/*.js', (done) => {
+            gulp.series(['build-js'])(done);
+        });
+    })
 );
 
 gulp.task('dev',
-  gulp.series(['build-css', 'build-js'])
+  gulp.series('build-css', 'build-js', () => {
+    gulp.watch('_frontend/scss/**/*.scss', (done) => {
+        gulp.series(['build-css'])(done);
+    });
+    
+    gulp.watch('_frontend/js/**/*.js', (done) => {
+        gulp.series(['build-js'])(done);
+    });
+  })
 );
-
 
 gulp.task('build',
     gulp.series(['build-css', 'build-js'])
 );
 
-gulp.watch('_frontend/scss/**/*.scss', (done) => {
-    gulp.series(['build-css'])(done);
-});
-
-gulp.watch('_frontend/js/**/*.js', (done) => {
-    gulp.series(['build-js'])(done);
-});

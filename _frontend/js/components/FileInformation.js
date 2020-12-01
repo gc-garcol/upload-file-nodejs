@@ -1,3 +1,4 @@
+
 /**
  * @author thaivan
  */
@@ -16,22 +17,43 @@ class FileInformation {
         console.log(fileData);
         this.classType = findClassType(this.fileName);
         this.clazz = FILE_CLASS[this.classType];
+
+        this.initOnDelete();
     }
 
     render = () => {
+        console.log(`classType ${this.classType}`);
         return `
-            <div onclick="onClickRow(this, '${this.fileData}', '${this.classType}', '${this.currentDir}/${this.fileData}')" class="file-information js-fileInformation">
+            <div onclick="${this.initOnDisplay()}" class="file-information js-fileInformation">
                 <div class="iconcontainer">
                     <i class="${this.clazz}" aria-hidden="true"></i>
                 </div>
                 <p class="text">${this.fileName}</p>
-                <p class="date">${this.date.getFullYear()}/${this.date.getMonth()}/${this.date.getDate()} - ${this.date.getHours()}:${this.date.getMinutes()}:${this.date.getSeconds()} </p>
+                <div class="file-information__button-group">
+                    <a target="_blank" href="${window.location.origin}/myfile${this.currentDir}/${this.fileName}" style=display:${this.classType == 'folder' ? 'none' : 'block'} download>
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                    </a>
+                    <i onclick='onDeleteFileInformation("${this.fileName}")' class="fa fa-trash" aria-hidden="true"></i>
+                </div>
             </div>
         `;
     }
 
-    
+    initOnDisplay() {
+        return `garcol.onClickRow(this, '${this.fileData}', '${this.classType}', '${this.currentDir}/${this.fileName}')`
+    }
 
+    initOnDelete() {
+        if (window.onDeleteFileInformation) return;
+        console.log("initOnDeleteFileInformation");
+
+        window.onDeleteFileInformation = (filename) => {
+            let elementPath = (this.classType == 'folder')
+                ? garcol.getCurrentDir()
+                : `${garcol.getCurrentDir()}/${filename}`;
+            garcol.NetworkService.deleteElement(elementPath);
+        };
+    }
 }
 
 const findClassType = (fileName) => {

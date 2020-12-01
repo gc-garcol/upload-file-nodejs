@@ -35,6 +35,10 @@
     .sidebar-area {
         transform: translateX(0);
     }
+
+    .file-area, .display-area{
+        width: calc(100% - 270px);
+    }
 }
 
 

@@ -1,11 +1,13 @@
 const IndexNetworkService = require("./IndexNetworkService");
 const FileInformation = require("../../components/FileInformation");
+const BootstrapToast = require("../../components/BootstrapToast");
 
 // Namespace
-const garcol = {};
+window.garcol = window.garcol || {}
+const garcol = window.garcol;
 
 // SERVICE
-const NetworkService = new IndexNetworkService(garcol);
+garcol.NetworkService = new IndexNetworkService(garcol);
 
 // CONSTs
 garcol.FILE_NAME = 'myfiles';
@@ -46,7 +48,7 @@ garcol.classTypeOFClickedElement = 'folder';
  * 
  * @param {String} extra photo link
  */
-onClickRow = (row, info, classType, extra) => {
+garcol.onClickRow = (row, info, classType, extra) => {
     console.log(`${row} - ${info} - ${classType} - ${extra}`);
     switch(classType) {
         case 'jpg':
@@ -60,7 +62,7 @@ onClickRow = (row, info, classType, extra) => {
         case 'folder':
             garcol.image.src = `${window.location.origin}${garcol.BASE}/img/folder.jpg`;
             garcol.folder.push(info);
-            NetworkService.getFiles(garcol.getCurrentDir());
+            garcol.NetworkService.getFiles(garcol.getCurrentDir());
             break;    
     }
     garcol.classTypeOFClickedElement = classType;
@@ -82,7 +84,7 @@ garcol.onResponseSubmitFile = (response) => {
     console.log(response);
     switch(response.status) {
         case 200: {
-            NetworkService.getFiles(garcol.getCurrentDir());
+            garcol.NetworkService.getFiles(garcol.getCurrentDir());
             garcol.closeSideBar();
             break;
         }
@@ -100,9 +102,9 @@ garcol.onResponseDelete = (response) => {
             if (garcol.classTypeOFClickedElement == 'folder') {
                 garcol.folder.pop();
             }
-            
+
             garcol.filenameDOM.innerHTML  = garcol.getCurrentDir();
-            NetworkService.getFiles(garcol.getCurrentDir());
+            garcol.NetworkService.getFiles(garcol.getCurrentDir());
             garcol.closeSideBar();
             break;
         }
@@ -135,12 +137,19 @@ garcol.onResponseCreateFolder = (response) => {
     console.log(response);
     switch (response.status) {
         case 200: {
-            NetworkService.getFiles(garcol.getCurrentDir());
+            garcol.NetworkService.getFiles(garcol.getCurrentDir());
             garcol.folderNameDOM.value = "";
             garcol.closeSideBar();
             break;
         }
     }
+}
+
+/**
+ * 
+ * @param {String} content 
+ */
+garcol.commonError = (content) => {
 }
 
 // UI SERVICEs
@@ -197,7 +206,7 @@ garcol.toggleSideBar = () => {
  */
 garcol.submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    NetworkService.submitFile(garcol.getCurrentDir());
+    garcol.NetworkService.submitFile(garcol.getCurrentDir());
 });
 
 /**
@@ -229,7 +238,7 @@ garcol.contentArea.addEventListener('click', garcol.onHideMenuBar);
  * 
  */
 garcol.loadFiles = () => {
-    NetworkService.getFiles(garcol.getCurrentDir());
+    garcol.NetworkService.getFiles(garcol.getCurrentDir());
 }
 
 /**
@@ -273,14 +282,14 @@ garcol.createFolderBtnDOM.addEventListener('click', () => {
     let dirname = garcol.folderNameDOM.value;
     let fullDirName = `${garcol.getCurrentDir() == "/" ? "" : garcol.getCurrentDir()}/${dirname}`;
     console.log(dirname +  " full " + fullDirName);
-    NetworkService.createFolder(fullDirName);
+    garcol.NetworkService.createFolder(fullDirName);
 });
 
 /**
  * [window onload]
  */
 window.onload = () => {
-    NetworkService.getFiles(garcol.getCurrentDir());
+    garcol.NetworkService.getFiles(garcol.getCurrentDir());
     garcol.filenameDOM.innerHTML = "/";
 }
 
@@ -288,15 +297,6 @@ window.onload = () => {
  * 
  */
 garcol.deleteFolderDOM.addEventListener('click', () => {
-    NetworkService.deleteElement(garcol.getCurrentDir());
+    garcol.NetworkService.deleteElement(garcol.getCurrentDir());
 })
 
-/**
- * 
- */
-garcol.deleteElementDOM.addEventListener('click', () => {
-    let elementPath = (garcol.classTypeOFClickedElement == 'folder')
-        ? garcol.getCurrentDir()
-        : `${garcol.getCurrentDir()}/${garcol.filenameDOM.innerHTML}`;
-    NetworkService.deleteElement(elementPath);
-})
