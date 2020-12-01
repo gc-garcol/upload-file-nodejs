@@ -58,7 +58,9 @@ router.post("/createfolder", (req, res) => {
     console.log(`FileController [URL] ${req.originalUrl} - ${fullFolderName}`);
 
     let result = FileService.createDirIfNotExist(fullFolderName);
-    res.status(200).send({message: "okie!!"});
+
+    let fd = fullFolderName.split("/");
+    res.status(200).send({message: `Created folder ${fd[fd.length - 1]}`});
 });
 
 /**
@@ -76,8 +78,10 @@ router.delete("/", (req, res) => {
         return;
     }
 
+    let fd = fullPathElement.split("/");
+
     FileService.deleteElement(`${fullPathElement}`, () => {
-        res.status(200).send({message: "okie!!"});
+        res.status(200).send({message: `Deleted ${fd[fd.length - 1]}`});
     })
 });
 

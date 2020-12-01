@@ -36,6 +36,7 @@ garcol.filenameDOM = document.getElementById("js-filename");
 garcol.goBackDOM = document.getElementsByClassName("js-back");
 garcol.deleteElementDOM = document.getElementById("js-deleteElement");
 garcol.deleteFolderDOM = document.getElementById("js-deleteFolder");
+garcol.messageContainer = window.$("js-messageContainer");
 
 // VARIABLEs
 garcol.folder = [];
@@ -86,6 +87,7 @@ garcol.onResponseSubmitFile = (response) => {
         case 200: {
             garcol.NetworkService.getFiles(garcol.getCurrentDir());
             garcol.closeSideBar();
+            new BootstrapToast("Upload successfully", `Files are uploaded`).render();
             break;
         }
     }
@@ -106,6 +108,8 @@ garcol.onResponseDelete = (response) => {
             garcol.filenameDOM.innerHTML  = garcol.getCurrentDir();
             garcol.NetworkService.getFiles(garcol.getCurrentDir());
             garcol.closeSideBar();
+
+            new BootstrapToast("Delete successfully!!!", `${response.data.message}`).render();
             break;
         }
     }
@@ -140,6 +144,7 @@ garcol.onResponseCreateFolder = (response) => {
             garcol.NetworkService.getFiles(garcol.getCurrentDir());
             garcol.folderNameDOM.value = "";
             garcol.closeSideBar();
+            new BootstrapToast("Create folder successfully!!!", `${response.data.message}`).render();
             break;
         }
     }
