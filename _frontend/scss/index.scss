@@ -27,6 +27,12 @@
     }
 }
 
+@media (max-width: 768px) {
+    .display-area__file-simulator-container {
+        justify-content: center;
+    }
+}
+
 @media (min-width: 768px) {
     .menu-bar {
         visibility: hidden;
