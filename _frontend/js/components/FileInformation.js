@@ -48,9 +48,7 @@ class FileInformation {
         console.log("initOnDeleteFileInformation");
 
         window.onDeleteFileInformation = (filename) => {
-            let elementPath = (this.classType == 'folder')
-                ? garcol.getCurrentDir()
-                : `${garcol.getCurrentDir()}/${filename}`;
+            let elementPath = `${garcol.getCurrentDir()}/${filename}`;
             garcol.NetworkService.deleteElement(elementPath);
         };
     }
