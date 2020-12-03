@@ -6,6 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "gulp",
+    "build": "gulp build",
+    "startbuild": "pm2 start server.js",
+    "stopbuild": "pm2 stop server.js",
+    "restartbuild": "pm2 restart server.js",
     "server": "nodemon"
   },
   "author": "thaivan",
